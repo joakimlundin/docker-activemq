@@ -9,6 +9,7 @@ RUN \
    add-apt-repository -y ppa:webupd8team/java && \
    apt-get update && \
    apt-get install -y oracle-java8-installer && \
+   apt-get clean && \
    rm -rf /var/lib/apt/lists/* && \
    rm -rf /var/cache/oracle-jdk8-installer
 
@@ -28,8 +29,12 @@ RUN tar -zxvf apache-activemq-5.15.3-bin.tar.gz && \
 ENV ACTIVEMQ_HOME ${ACTIVEMQ_ROOT}/apache-activemq-5.15.3
 WORKDIR ${ACTIVEMQ_HOME}
 ADD activemq.xml conf/
+ADD log4j.properties conf/
 RUN chown -R activemq:activemq ${ACTIVEMQ_ROOT}
  
+# Mount data directory
+VOLUME ${ACTIVEMQ_HOME}/data
+
 # Expose standard ports
 EXPOSE 5672 8161
 
