@@ -17,7 +17,10 @@ WORKDIR ${ACTIVEMQ_HOME}
 ADD activemq.xml conf/
 ADD log4j.properties conf/
 RUN chown -R activemq:activemq ${ACTIVEMQ_ROOT}
- 
+
+# Set system variables user in configuration
+RUN sed -i 's/^ *ACTIVEMQ_OPTS_MEMORY=.*$/ACTIVEMQ_OPTS_MEMORY="-Xms7G -Xmx7G"/' bin/env
+
 # Mount data directory
 VOLUME ${ACTIVEMQ_HOME}/data
 
